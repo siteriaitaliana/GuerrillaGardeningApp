@@ -12,18 +12,18 @@ fs.readFile('./index.html', function (err, data) {
     index = data;
 });
          
-fs.readFile('./order1.html', function (err, data) {
+fs.readFile('./location1.html', function (err, data) {
     if (err) {
         throw err;
     }
-    order1 = data;
+    location1 = data;
 });
 
-fs.readFile('./order2.html', function (err, data) {
+fs.readFile('./location2.html', function (err, data) {
     if (err) {
         throw err;
     }
-    order2 = data;
+    location2 = data;
 });
 
 
@@ -35,9 +35,9 @@ fs.readFile('./404.html', function (err, data) {
 });
   
   // mac setting
-  //http.createServer(onRequest).listen(1234, '127.0.0.1');
+  http.createServer(onRequest).listen(1234, '127.0.0.1');
   // cloud9ide setting	
-  http.createServer(onRequest).listen(process.env.C9_PORT, '0.0.0.0');
+  //http.createServer(onRequest).listen(process.env.C9_PORT, '0.0.0.0');
   
   console.log("Server has started.");
 
@@ -47,13 +47,18 @@ fs.readFile('./404.html', function (err, data) {
             if (pathname.match(/^\/$/)) {
             returnHome(response);
             }
-            else 
+            else if(request.url.match(/\d{1,2}$/)) 
             {
                 address = request.url;
                 address = address.match(/\d{1,2}$/);
 
-                 returnOrderPage(address, response);                
+                 returnLocationPage(address, response);                
             }
+            else if(request.url == "7guerrilla_o.jpg")
+            {
+            	response.writeHead(404, {"Content-Type": "text/html"});
+        	    response.write(fourzerofour);
+        	} 
             
         } else {
         response.writeHead(404, {"Content-Type": "text/html"});
@@ -68,17 +73,17 @@ fs.readFile('./404.html', function (err, data) {
         response.end();
   }
   
-  function returnOrderPage(orderID, response){
+  function returnLocationPage(LocationID, response){
        if (address == '1') 
        {
        		response.writeHead(200, {"Content-Type": "text/html"});
-	 		response.write(order1);
+	 		response.write(location1);
 			response.end();
        }
        else 
        {
        		response.writeHead(200, {"Content-Type": "text/html"});
-	 		response.write(order2);
+	 		response.write(location2);
 			response.end();                   	
        }          
 
